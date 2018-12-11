@@ -1,8 +1,7 @@
 #include "util.hpp"
 
-namespace mba {
+namespace ${$NAMESPACE$}$ {
 
 	const char* hello() { return "Hello World"; }
 
-} // namespace mba
-
+} // namespace ${$NAMESPACE$}$

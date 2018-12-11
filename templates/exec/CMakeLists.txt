@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(cpp_project  LANGUAGES CXX)
+project(${$PROJECT_NAME$}$  LANGUAGES CXX)
 
 ########## General Settings for the whole project ############################
 set(CMAKE_CXX_STANDARD 17)
@@ -18,7 +18,7 @@ endif()
 
 ########## Lookup libraries ##################################################
 
-find_package(cxxopts REQUIRED)
+# find_package(<package>)
 # add_subdirectory( <libs/libname>)
 
 ########## Generate Executable  ##############################################
@@ -26,10 +26,9 @@ find_package(cxxopts REQUIRED)
 add_subdirectory( src )
 
 ########## Testing ###########################################################
-option(cpp_project_INCLUDE_TESTS "Generate targets in test directory" ON)
+option(${$PROJECT_NAME$}$_INCLUDE_TESTS "Generate targets in test directory" ON)
 
-if( cpp_project_INCLUDE_TESTS )
+if( ${$PROJECT_NAME$}$_INCLUDE_TESTS )
 	enable_testing()
 	add_subdirectory( tests )
 endif()
-
