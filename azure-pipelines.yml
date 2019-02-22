@@ -1,0 +1,37 @@
+trigger:
+- master
+- feature/*
+
+variables:
+  VCPKG_PATH: /usr/local/share/vcpkg
+
+jobs:
+- job: Build
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  strategy:
+    matrix:
+      GCC-8:
+        COMPILER: g++-8
+# Not yet available
+#      GCC-9:
+#        GCC_VERSION: g++-9
+
+  steps:
+  - script: |
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+      sudo apt update -y
+      sudo apt install $(COMPILER) ninja-build -y 
+    displayName: 'Install compiler'
+
+  - script: |
+      echo "vcpkg installed at: $(vcpkg integrate install)"
+      vcpkg install cxxopts catch2
+    displayName: 'Install dependencies'
+
+  - script: |
+      export CXX=$(COMPILER)
+      mkdir __build__ && cd __build__
+      cmake -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake -G"Ninja" ..
+      cmake --build .
+    displayName: 'Build app'
