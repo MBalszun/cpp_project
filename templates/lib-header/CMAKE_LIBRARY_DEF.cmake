@@ -1,4 +1,1 @@
-add_library(
-	${$TARGET_NAME$}$
-	INTERFACE
-)
+add_library( ${$TARGET_NAME$}$ INTERFACE )

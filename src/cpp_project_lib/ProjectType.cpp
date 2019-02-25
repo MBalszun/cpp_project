@@ -1,5 +1,7 @@
 #include "ProjectType.h"
 
+#include <stdexcept>
+
 #include <cassert>
 
 namespace mba {

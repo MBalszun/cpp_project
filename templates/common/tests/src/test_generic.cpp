@@ -1,5 +1,4 @@
 ${$SNIPP_$INCLUDE_HELLO.cpp$$}$
-
 #include <catch2/catch.hpp>
 
 #include <iostream>

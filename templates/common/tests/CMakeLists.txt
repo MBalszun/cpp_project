@@ -1,18 +1,18 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required( VERSION 3.11 )
 
 ########## General Settings for the whole project ############################
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( CMAKE_CXX_EXTENSIONS OFF )
 
-if (MSVC)
+if( MSVC )
 	# Set warning level (CMAKE adds /W3 and msvc produces a warning, when we would just add /W4 )
-	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+	STRING( REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 	add_compile_options(
 		/permissive-
 	)
 else()
-	add_compile_options(-Wall -Wextra)
+	add_compile_options( -Wall -Wextra )
 endif()
 
 ########## Generate test executable ##########################################
@@ -22,15 +22,15 @@ add_executable(
 )
 
 # search for test source files (have to start with prefix test_)
-file(GLOB_RECURSE TEST_FILES test_*.cpp)
+file( GLOB_RECURSE TEST_FILES test_*.cpp )
 target_sources(
 	${$TARGET_NAME$}$_tests
 PUBLIC
 	${TEST_FILES}
 )
 
-find_package(Catch2 CONFIG REQUIRED)
-find_package(Threads REQUIRED)
+find_package( Catch2 CONFIG REQUIRED 
+find_package( Threads REQUIRED )
 
 target_link_libraries(
 	${$TARGET_NAME$}$_tests
@@ -48,5 +48,4 @@ ADD_TEST(NAME build_${$TARGET_NAME$}$_tests COMMAND ${CMAKE_COMMAND} --build ${C
 
 include(ParseAndAddCatchTests)
 
-set(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS ON)
 ParseAndAddCatchTests(${$TARGET_NAME$}$_tests)

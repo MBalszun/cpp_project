@@ -9,6 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if (MSVC)
 	# Set warning level (CMAKE adds /W3 and msvc produces a warning, when we would just add /W4 )
 	STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 	add_compile_options(
 		/permissive-
 	)
@@ -26,7 +27,7 @@ find_package(cxxopts REQUIRED)
 add_subdirectory( src )
 
 ########## Testing ###########################################################
-option(cpp_project_INCLUDE_TESTS "Generate targets in test directory" ON)
+option(cpp_project_INCLUDE_TESTS "Generate targets in test directory" OFF)
 
 if( cpp_project_INCLUDE_TESTS )
 	enable_testing()

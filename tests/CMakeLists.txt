@@ -33,6 +33,4 @@ ADD_TEST(NAME build_cpp_project_tests COMMAND ${CMAKE_COMMAND} --build ${CMAKE_B
 
 include(ParseAndAddCatchTests)
 
-set(PARSE_CATCH_TESTS_ADD_TO_CONFIGURE_DEPENDS ON)
-ParseAndAddCatchTests(cpp_project_tests)
-
+ParseAndAddCatchTests(cpp_project_tests)   

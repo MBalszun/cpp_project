@@ -1,9 +1,10 @@
-#include <cpp_project/ProjectType.h>
-#include <cpp_project/config.h>
-#include <cpp_project/git.h>
-#include <cpp_project/helpers.h>
+#include <cpp_project_lib/ProjectType.h>
+#include <cpp_project_lib/config.h>
+#include <cpp_project_lib/git.h>
+#include <cpp_project_lib/helpers.h>
 
 #include <cassert>
+#include <charconv>
 #include <chrono>
 #include <iostream>
 #include <string>
@@ -21,22 +22,24 @@ void install_project( const Config& cfg )
 	const mba::fs::path&   project_dir  = cfg.project_dir;
 	const mba::ProjectType prj_type     = cfg.prj_type;
 
+	std::vector<std::filesystem::path> installed_files;
+
 	fs::create_directories( project_dir );
-	install_recursive( template_dir / "common", project_dir, cfg );
+	merge( installed_files, install_recursive( template_dir / "common", project_dir, cfg ) );
 	switch( prj_type ) {
 		case ProjectType::exec:
-			install_recursive( template_dir / "exec", project_dir, cfg );
+			merge( installed_files, install_recursive( template_dir / "exec", project_dir, cfg ) );
 			// create some empty
 			fs::create_directories( project_dir / "src" );
 			fs::create_directories( project_dir / "libs" );
 			break;
 		case ProjectType::lib:
-			install_recursive( template_dir / "lib-common", project_dir, cfg );
-			install_recursive( template_dir / "lib-compiled", project_dir, cfg );
+			merge( installed_files, install_recursive( template_dir / "lib-common", project_dir, cfg ) );
+			merge( installed_files, install_recursive( template_dir / "lib-compiled", project_dir, cfg ) );
 			break;
 		case ProjectType::lib_header_only:
-			install_recursive( template_dir / "lib-common", project_dir, cfg );
-			install_recursive( template_dir / "lib-header", project_dir, cfg );
+			merge( installed_files, install_recursive( template_dir / "lib-common", project_dir, cfg ) );
+			merge( installed_files, install_recursive( template_dir / "lib-header", project_dir, cfg ) );
 			break;
 		default: assert( false );
 	}
@@ -56,7 +59,7 @@ const std::string post_build_message
 	  "\n# you can perform the following steps:"
 	  "\n#"
 	  "\n# - Create and switch to the directory you want to build in"
-	  "\n# - cmake .. "
+	  "\n# - cmake <Project directory> "
 	  "\n# - cmake --build ."
 	  "\n# - ctest . # or for MSVC: ctest . -C Debug"
 	  "\n#"

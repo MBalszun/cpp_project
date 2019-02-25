@@ -1,4 +1,4 @@
-#include <cpp_project/ProjectType.h>
+#include <cpp_project_lib/ProjectType.h>
 
 #include <catch2/catch.hpp>
 

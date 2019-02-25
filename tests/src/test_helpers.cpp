@@ -1,4 +1,4 @@
-#include <cpp_project/helpers.h>
+#include <cpp_project_lib/helpers.h>
 
 #include <catch2/catch.hpp>
 

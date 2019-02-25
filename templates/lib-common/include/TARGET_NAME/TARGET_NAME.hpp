@@ -4,7 +4,7 @@ namespace ${$NAMESPACE$}$ {
 
 inline const char* hello()
 {
-	return "${$TARGET_NAME$}$ says hello!";
+	return "${$PROJECT_NAME$}$ says hello!";
 }
 
 } // namespace ${$NAMESPACE$}$

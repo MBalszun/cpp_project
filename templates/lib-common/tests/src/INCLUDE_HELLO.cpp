@@ -1,1 +1,1 @@
-#include "${$PROJECT_NAME$}$/${$PROJECT_NAME$}$.hpp"
+#include <${$TARGET_NAME$}$/${$TARGET_NAME$}$.hpp>
