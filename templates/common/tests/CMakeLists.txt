@@ -29,7 +29,7 @@ PUBLIC
 	${TEST_FILES}
 )
 
-find_package( Catch2 CONFIG REQUIRED 
+find_package( Catch2 CONFIG REQUIRED )
 find_package( Threads REQUIRED )
 
 target_link_libraries(
