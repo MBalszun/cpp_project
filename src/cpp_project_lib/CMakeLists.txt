@@ -20,6 +20,7 @@ target_link_libraries(
 	cpp_project_lib
 PUBLIC
 	cxxopts::cxxopts
+	catch_clara
 	# just a guess that we ar using libstdc++: gcc 8 requires the filesystem library to be linked explicitly
 	$<IF:$<BOOL:${WIN32}>,,stdc++fs>
 )

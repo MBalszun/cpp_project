@@ -19,8 +19,8 @@ endif()
 
 ########## Lookup libraries ##################################################
 
-find_package(cxxopts REQUIRED)
-# add_subdirectory( <libs/libname>)
+find_package( cxxopts REQUIRED )
+add_subdirectory( libs/clara )
 
 ########## Generate Executable  ##############################################
 

@@ -70,6 +70,11 @@ const std::string post_build_message
 int main( int argc, char** argv )
 {
 	try {
+		UserConfig  config1 = parse_config_clara( argc, argv );
+		std::cout << to_string( config1 ) << std::endl;
+		std::cout << "Results in : " << to_string( generate_full_config( config1 ) ) << std::endl
+				  << std::endl;
+
 		Config cfg = parse_config( argc, argv );
 
 		std::cout << "This will create a \"" << to_string( cfg.prj_type )
