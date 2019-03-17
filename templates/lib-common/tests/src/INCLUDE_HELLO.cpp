@@ -1,1 +1,1 @@
-#include <${$TARGET_NAME$}$/${$TARGET_NAME$}$.hpp>
+#include <${$INCLUDE_DIR_NAME$}$/${$INCLUDE_DIR_NAME$}$.hpp>

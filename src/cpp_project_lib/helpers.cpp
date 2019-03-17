@@ -168,7 +168,7 @@ std::vector<std::filesystem::path> install_recursive( const fs::path& template_d
 		std::string filename = dir.path().filename().u8string();
 		replace_inplace( filename, regex_project_filename, names.project );
 		replace_inplace( filename, regex_target_filename, names.target );
-		replace_inplace( filename, regex_component_filename, names.component_name );
+		//replace_inplace( filename, regex_component_filename, names.component_name );
 
 		auto new_element = dest / filename;
 		if( dir.is_directory() ) {
@@ -177,6 +177,31 @@ std::vector<std::filesystem::path> install_recursive( const fs::path& template_d
 			ret.insert( ret.begin(), installed.begin(), installed.end() );
 		} else {
 			install_file( dir.path(), new_element, cfg );
+			ret.push_back( new_element );
+		}
+	}
+
+	return ret;
+}
+
+std::vector<std::filesystem::path>
+install_recursive( const fs::path& template_dir, const fs::path& dest, const FullConfig& cfg )
+{
+	std::vector<std::filesystem::path> ret;
+
+	for( auto dir : fs::directory_iterator( template_dir ) ) {
+		std::string filename = dir.path().filename().u8string();
+		replace_inplace( filename, regex_project_filename, cfg.project_name );
+		replace_inplace( filename, regex_target_filename,  cfg.target );
+		//replace_inplace( filename, regex_component_filename, names.component_name );
+
+		auto new_element = dest / filename;
+		if( dir.is_directory() ) {
+			fs::create_directories( new_element );
+			auto installed = install_recursive( dir, new_element, cfg );
+			ret.insert( ret.begin(), installed.begin(), installed.end() );
+		} else {
+			install_file( dir.path(), new_element, to_old_config(cfg) );
 			ret.push_back( new_element );
 		}
 	}
