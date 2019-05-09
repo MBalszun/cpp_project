@@ -1,0 +1,75 @@
+trigger:
+- master
+- feature/*
+
+jobs:
+- job: Build_Windows_17
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+  - powershell: |
+      vcpkg integrate install
+      vcpkg install cxxopts catch2
+    displayName: 'Install dependencies'
+
+  - powershell: |
+      mkdir __build__ 
+      cd __build__
+      cmake -DCMAKE_TOOLCHAIN_FILE="$ENV:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" ..
+      cmake --build .
+    displayName: 'Build app'
+
+
+- job: Build_Ubuntu
+  variables:
+    VCPKG_PATH: /usr/local/share/vcpkg
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  strategy:
+    matrix:
+      GCC-8:
+        COMPILER: g++-8
+# Not yet available
+#      GCC-9:
+#        GCC_VERSION: g++-9
+
+  steps:
+  - script: |
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+      sudo apt update -y
+      sudo apt install $(COMPILER) ninja-build -y 
+    displayName: 'Install compiler'
+
+  - script: |
+      echo "vcpkg installed at: $(vcpkg integrate install)"
+      vcpkg install cxxopts catch2
+    displayName: 'Install dependencies'
+
+  - script: |
+      export CXX=$(COMPILER)
+      mkdir __build__ && cd __build__
+      cmake -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake -G"Ninja" ..
+      cmake --build .
+    displayName: 'Build app'
+
+# currently missing vcpkg
+#- job: Build_Windows_19
+#  pool:
+  #   vmImage: 'windows-2019'
+
+  # steps:
+  # - powershell: |
+  #     Install-Vcpkg.ps1
+  #     vcpkg.exe integrate install
+  #     vcpkg.exe install cxxopts catch2
+  #   displayName: 'Install dependencies'
+
+  # - script: |
+  #     export CXX=$(COMPILER)
+  #     mkdir __build__ && cd __build__
+  #     cmake -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake -G"Ninja" ..
+  #     cmake --build .
+  #   displayName: 'Build app'
+
+
